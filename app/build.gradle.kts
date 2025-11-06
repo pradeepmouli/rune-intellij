@@ -47,7 +47,7 @@ intellijPlatform {
             untilBuild = "243.*"
         }
     }
-    
+
     pluginVerification {
         ides {
             ide("IC-2024.2.4")
@@ -74,7 +74,7 @@ ktlint {
     verbose.set(false)
     android.set(false)
     outputToConsole.set(false)
-    
+
     // Disable ktlint temporarily due to parsing issues
     // Re-enable after fixing compatibility
     ignoreFailures.set(true)

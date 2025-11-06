@@ -92,7 +92,7 @@ Independent Test Criteria: Create a new Rune project via IDE flow, run validatio
 ### ✅ Completed (43/43 tasks)
 
 **Phase 1 — Setup**: 4/4 tasks complete
-**Phase 2 — Foundational**: 12/12 tasks complete  
+**Phase 2 — Foundational**: 12/12 tasks complete
 **Phase 3 — User Story 1 (P1)**: 10/10 tasks complete
 **Phase 4 — User Story 2 (P2)**: 8/8 tasks complete
 **Phase 5 — User Story 3 (P3)**: 4/4 tasks complete
