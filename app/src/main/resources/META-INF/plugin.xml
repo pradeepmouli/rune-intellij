@@ -62,10 +62,27 @@
         <lang.psiStructureViewFactory
             language="Rosetta"
             implementationClass="com.github.pmouli.rune.structure.RosettaStructureViewFactory"/>
+        
+        <!-- Project configuration -->
+        <projectConfigurable
+            instance="com.github.pmouli.rune.settings.RuneSettingsConfigurable"
+            displayName="Rune DSL"
+            groupId="tools"/>
+        
+        <projectService
+            serviceImplementation="com.github.pmouli.rune.settings.RuneProjectConfiguration"/>
     </extensions>
 
     <!-- Extension points and actions -->
     <actions>
+        <action id="Rune.GeneratePreview"
+                class="com.github.pmouli.rune.actions.GeneratePreviewAction"
+                text="Generate Code Preview"
+                description="Generate Java code from Rune DSL with preview">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+        
         <action id="Rune.HelloAction"
                 class="com.github.pmouli.rune.actions.HelloAction"
                 text="Hello Rune"

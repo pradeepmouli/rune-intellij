@@ -54,14 +54,14 @@ Independent Test Criteria: Open sample .rosetta files and verify highlighting, c
 Goal: Trigger generation, show diff preview, apply outputs with progress/cancel.
 Independent Test Criteria: With an existing Rune sample, invoke generation and preview/apply into a sandbox folder.
 
-- [ ] T027 [P] [US2] Define generator contract in app/src/main/kotlin/com/github/pmouli/rune/generation/RosettaGeneratorContract.kt
-- [ ] T028 [P] [US2] Implement Rune Java adapter in app/src/main/kotlin/com/github/pmouli/rune/generation/RuneJavaGeneratorAdapter.kt
+- [x] T027 [P] [US2] Define generator contract in app/src/main/kotlin/com/github/pmouli/rune/generation/RosettaGeneratorContract.kt
+- [x] T028 [P] [US2] Implement Rune Java adapter in app/src/main/kotlin/com/github/pmouli/rune/generation/RuneJavaGeneratorAdapter.kt
 - [ ] T029 [P] [US2] Implement compile task in app/src/main/kotlin/com/github/pmouli/rune/generation/RosettaGenerationCompileTask.kt
-- [ ] T030 [US2] Create Generate Preview action in app/src/main/kotlin/com/github/pmouli/rune/actions/GeneratePreviewAction.kt
+- [x] T030 [US2] Create Generate Preview action in app/src/main/kotlin/com/github/pmouli/rune/actions/GeneratePreviewAction.kt
 - [ ] T031 [US2] Implement diff preview flow using DiffManager in app/src/main/kotlin/com/github/pmouli/rune/generation/PreviewService.kt
-- [ ] T032 [US2] Add project settings configurable in app/src/main/kotlin/com/github/pmouli/rune/settings/RuneSettingsConfigurable.kt
-- [ ] T033 [US2] Persist project configuration in app/src/main/kotlin/com/github/pmouli/rune/settings/RuneProjectConfiguration.kt
-- [ ] T034 [US2] Register generator actions/services in app/src/main/resources/META-INF/plugin.xml
+- [x] T032 [US2] Add project settings configurable in app/src/main/kotlin/com/github/pmouli/rune/settings/RuneSettingsConfigurable.kt
+- [x] T033 [US2] Persist project configuration in app/src/main/kotlin/com/github/pmouli/rune/settings/RuneProjectConfiguration.kt
+- [x] T034 [US2] Register generator actions/services in app/src/main/resources/META-INF/plugin.xml
 
 ---
 
