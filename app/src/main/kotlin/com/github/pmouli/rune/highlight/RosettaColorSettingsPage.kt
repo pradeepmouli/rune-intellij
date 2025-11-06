@@ -1,11 +1,11 @@
 package com.github.pmouli.rune.highlight
 
+import com.github.pmouli.rune.RosettaFileType
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
-import com.github.pmouli.rune.RosettaFileType
 import javax.swing.Icon
 
 /**
@@ -18,20 +18,21 @@ import javax.swing.Icon
  */
 class RosettaColorSettingsPage : ColorSettingsPage {
     companion object {
-        private val DESCRIPTORS = arrayOf(
-            AttributesDescriptor("Keyword", RosettaSyntaxHighlighter.KEYWORD),
-            AttributesDescriptor("String", RosettaSyntaxHighlighter.STRING),
-            AttributesDescriptor("Number", RosettaSyntaxHighlighter.NUMBER),
-            AttributesDescriptor("Comment", RosettaSyntaxHighlighter.COMMENT),
-            AttributesDescriptor("Identifier", RosettaSyntaxHighlighter.IDENTIFIER),
-            AttributesDescriptor("Operator", RosettaSyntaxHighlighter.OPERATOR),
-            AttributesDescriptor("Braces", RosettaSyntaxHighlighter.BRACES),
-            AttributesDescriptor("Brackets", RosettaSyntaxHighlighter.BRACKETS),
-            AttributesDescriptor("Parentheses", RosettaSyntaxHighlighter.PARENTHESES),
-            AttributesDescriptor("Dot", RosettaSyntaxHighlighter.DOT),
-            AttributesDescriptor("Comma", RosettaSyntaxHighlighter.COMMA),
-            AttributesDescriptor("Semicolon", RosettaSyntaxHighlighter.SEMICOLON)
-        )
+        private val DESCRIPTORS =
+            arrayOf(
+                AttributesDescriptor("Keyword", RosettaSyntaxHighlighter.KEYWORD),
+                AttributesDescriptor("String", RosettaSyntaxHighlighter.STRING),
+                AttributesDescriptor("Number", RosettaSyntaxHighlighter.NUMBER),
+                AttributesDescriptor("Comment", RosettaSyntaxHighlighter.COMMENT),
+                AttributesDescriptor("Identifier", RosettaSyntaxHighlighter.IDENTIFIER),
+                AttributesDescriptor("Operator", RosettaSyntaxHighlighter.OPERATOR),
+                AttributesDescriptor("Braces", RosettaSyntaxHighlighter.BRACES),
+                AttributesDescriptor("Brackets", RosettaSyntaxHighlighter.BRACKETS),
+                AttributesDescriptor("Parentheses", RosettaSyntaxHighlighter.PARENTHESES),
+                AttributesDescriptor("Dot", RosettaSyntaxHighlighter.DOT),
+                AttributesDescriptor("Comma", RosettaSyntaxHighlighter.COMMA),
+                AttributesDescriptor("Semicolon", RosettaSyntaxHighlighter.SEMICOLON),
+            )
 
         private const val DEMO_TEXT = """
 namespace com.example

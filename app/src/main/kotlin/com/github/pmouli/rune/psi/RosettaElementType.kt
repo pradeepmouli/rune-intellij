@@ -1,7 +1,7 @@
 package com.github.pmouli.rune.psi
 
-import com.intellij.psi.tree.IElementType
 import com.github.pmouli.rune.RosettaLanguage
+import com.intellij.psi.tree.IElementType
 
 /**
  * Custom element type for Rune DSL (Rosetta) PSI tree nodes.

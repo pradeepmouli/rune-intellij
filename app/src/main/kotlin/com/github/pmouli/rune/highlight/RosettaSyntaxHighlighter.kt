@@ -1,12 +1,12 @@
 package com.github.pmouli.rune.highlight
 
+import com.github.pmouli.rune.lexer.RosettaLexerAdapter
+import com.github.pmouli.rune.psi.RosettaTokenTypes
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
-import com.github.pmouli.rune.lexer.RosettaLexerAdapter
-import com.github.pmouli.rune.psi.RosettaTokenTypes
 
 /**
  * Syntax highlighter for Rune DSL (Rosetta).
@@ -19,107 +19,120 @@ import com.github.pmouli.rune.psi.RosettaTokenTypes
 class RosettaSyntaxHighlighter : SyntaxHighlighterBase() {
     companion object {
         // Define text attribute keys for different token categories
-        val KEYWORD = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_KEYWORD",
-            DefaultLanguageHighlighterColors.KEYWORD
-        )
+        val KEYWORD =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_KEYWORD",
+                DefaultLanguageHighlighterColors.KEYWORD,
+            )
 
-        val STRING = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_STRING",
-            DefaultLanguageHighlighterColors.STRING
-        )
+        val STRING =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_STRING",
+                DefaultLanguageHighlighterColors.STRING,
+            )
 
-        val NUMBER = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_NUMBER",
-            DefaultLanguageHighlighterColors.NUMBER
-        )
+        val NUMBER =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_NUMBER",
+                DefaultLanguageHighlighterColors.NUMBER,
+            )
 
-        val COMMENT = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_COMMENT",
-            DefaultLanguageHighlighterColors.LINE_COMMENT
-        )
+        val COMMENT =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_COMMENT",
+                DefaultLanguageHighlighterColors.LINE_COMMENT,
+            )
 
-        val IDENTIFIER = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_IDENTIFIER",
-            DefaultLanguageHighlighterColors.IDENTIFIER
-        )
+        val IDENTIFIER =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_IDENTIFIER",
+                DefaultLanguageHighlighterColors.IDENTIFIER,
+            )
 
-        val OPERATOR = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_OPERATOR",
-            DefaultLanguageHighlighterColors.OPERATION_SIGN
-        )
+        val OPERATOR =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_OPERATOR",
+                DefaultLanguageHighlighterColors.OPERATION_SIGN,
+            )
 
-        val BRACES = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_BRACES",
-            DefaultLanguageHighlighterColors.BRACES
-        )
+        val BRACES =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_BRACES",
+                DefaultLanguageHighlighterColors.BRACES,
+            )
 
-        val BRACKETS = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_BRACKETS",
-            DefaultLanguageHighlighterColors.BRACKETS
-        )
+        val BRACKETS =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_BRACKETS",
+                DefaultLanguageHighlighterColors.BRACKETS,
+            )
 
-        val PARENTHESES = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_PARENTHESES",
-            DefaultLanguageHighlighterColors.PARENTHESES
-        )
+        val PARENTHESES =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_PARENTHESES",
+                DefaultLanguageHighlighterColors.PARENTHESES,
+            )
 
-        val DOT = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_DOT",
-            DefaultLanguageHighlighterColors.DOT
-        )
+        val DOT =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_DOT",
+                DefaultLanguageHighlighterColors.DOT,
+            )
 
-        val COMMA = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_COMMA",
-            DefaultLanguageHighlighterColors.COMMA
-        )
+        val COMMA =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_COMMA",
+                DefaultLanguageHighlighterColors.COMMA,
+            )
 
-        val SEMICOLON = TextAttributesKey.createTextAttributesKey(
-            "ROSETTA_SEMICOLON",
-            DefaultLanguageHighlighterColors.SEMICOLON
-        )
+        val SEMICOLON =
+            TextAttributesKey.createTextAttributesKey(
+                "ROSETTA_SEMICOLON",
+                DefaultLanguageHighlighterColors.SEMICOLON,
+            )
 
         // Keyword token arrays for fast lookup
-        private val KEYWORD_TOKENS = arrayOf(
-            RosettaTokenTypes.NAMESPACE,
-            RosettaTokenTypes.TYPE,
-            RosettaTokenTypes.FUNC,
-            RosettaTokenTypes.ENUM,
-            RosettaTokenTypes.CHOICE,
-            RosettaTokenTypes.ALIAS,
-            RosettaTokenTypes.ANNOTATION,
-            RosettaTokenTypes.SCHEME,
-            RosettaTokenTypes.CALCULATION,
-            RosettaTokenTypes.REPORTING,
-            RosettaTokenTypes.EXTENDS,
-            RosettaTokenTypes.CONDITION,
-            RosettaTokenTypes.OPTIONAL,
-            RosettaTokenTypes.ONE_OF,
-            RosettaTokenTypes.REQUIRED,
-            RosettaTokenTypes.IF,
-            RosettaTokenTypes.THEN,
-            RosettaTokenTypes.ELSE,
-            RosettaTokenTypes.AND,
-            RosettaTokenTypes.OR,
-            RosettaTokenTypes.NOT,
-            RosettaTokenTypes.EXISTS,
-            RosettaTokenTypes.ONLY,
-            RosettaTokenTypes.IS,
-            RosettaTokenTypes.ABSENT,
-            RosettaTokenTypes.STRING_TYPE,
-            RosettaTokenTypes.INT_TYPE,
-            RosettaTokenTypes.NUMBER_TYPE,
-            RosettaTokenTypes.BOOLEAN_TYPE,
-            RosettaTokenTypes.DATE_TYPE,
-            RosettaTokenTypes.TIME_TYPE,
-            RosettaTokenTypes.DATETIME_TYPE,
-            RosettaTokenTypes.ZONEDDATETIME_TYPE,
-            RosettaTokenTypes.SYNONYM,
-            RosettaTokenTypes.METADATA,
-            RosettaTokenTypes.REFERENCE,
-            RosettaTokenTypes.ID,
-            RosettaTokenTypes.KEY
-        )
+        private val KEYWORD_TOKENS =
+            arrayOf(
+                RosettaTokenTypes.NAMESPACE,
+                RosettaTokenTypes.TYPE,
+                RosettaTokenTypes.FUNC,
+                RosettaTokenTypes.ENUM,
+                RosettaTokenTypes.CHOICE,
+                RosettaTokenTypes.ALIAS,
+                RosettaTokenTypes.ANNOTATION,
+                RosettaTokenTypes.SCHEME,
+                RosettaTokenTypes.CALCULATION,
+                RosettaTokenTypes.REPORTING,
+                RosettaTokenTypes.EXTENDS,
+                RosettaTokenTypes.CONDITION,
+                RosettaTokenTypes.OPTIONAL,
+                RosettaTokenTypes.ONE_OF,
+                RosettaTokenTypes.REQUIRED,
+                RosettaTokenTypes.IF,
+                RosettaTokenTypes.THEN,
+                RosettaTokenTypes.ELSE,
+                RosettaTokenTypes.AND,
+                RosettaTokenTypes.OR,
+                RosettaTokenTypes.NOT,
+                RosettaTokenTypes.EXISTS,
+                RosettaTokenTypes.ONLY,
+                RosettaTokenTypes.IS,
+                RosettaTokenTypes.ABSENT,
+                RosettaTokenTypes.STRING_TYPE,
+                RosettaTokenTypes.INT_TYPE,
+                RosettaTokenTypes.NUMBER_TYPE,
+                RosettaTokenTypes.BOOLEAN_TYPE,
+                RosettaTokenTypes.DATE_TYPE,
+                RosettaTokenTypes.TIME_TYPE,
+                RosettaTokenTypes.DATETIME_TYPE,
+                RosettaTokenTypes.ZONEDDATETIME_TYPE,
+                RosettaTokenTypes.SYNONYM,
+                RosettaTokenTypes.METADATA,
+                RosettaTokenTypes.REFERENCE,
+                RosettaTokenTypes.ID,
+                RosettaTokenTypes.KEY,
+            )
 
         private val KEYWORD_KEYS = arrayOf(KEYWORD)
         private val STRING_KEYS = arrayOf(STRING)
@@ -149,7 +162,8 @@ class RosettaSyntaxHighlighter : SyntaxHighlighterBase() {
             RosettaTokenTypes.LE, RosettaTokenTypes.GE, RosettaTokenTypes.EQ,
             RosettaTokenTypes.NE, RosettaTokenTypes.PLUS, RosettaTokenTypes.MINUS,
             RosettaTokenTypes.MULT, RosettaTokenTypes.DIV, RosettaTokenTypes.ARROW,
-            RosettaTokenTypes.DOTDOT -> OPERATOR_KEYS
+            RosettaTokenTypes.DOTDOT,
+            -> OPERATOR_KEYS
             RosettaTokenTypes.LBRACE, RosettaTokenTypes.RBRACE -> BRACES_KEYS
             RosettaTokenTypes.LBRACKET, RosettaTokenTypes.RBRACKET -> BRACKETS_KEYS
             RosettaTokenTypes.LPAREN, RosettaTokenTypes.RPAREN -> PARENTHESES_KEYS

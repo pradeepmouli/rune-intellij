@@ -34,13 +34,14 @@ class RuneSettingsConfigurable(private val project: Project) : Configurable {
         generateBuildersCheckbox.isSelected = config.generateBuilders
         generateValidationCheckbox.isSelected = config.generateValidation
 
-        panel = FormBuilder.createFormBuilder()
-            .addLabeledComponent("Output Directory:", outputDirField)
-            .addLabeledComponent("Output Package:", outputPackageField)
-            .addComponent(generateBuildersCheckbox)
-            .addComponent(generateValidationCheckbox)
-            .addComponentFillVertically(JPanel(), 0)
-            .panel
+        panel =
+            FormBuilder.createFormBuilder()
+                .addLabeledComponent("Output Directory:", outputDirField)
+                .addLabeledComponent("Output Package:", outputPackageField)
+                .addComponent(generateBuildersCheckbox)
+                .addComponent(generateValidationCheckbox)
+                .addComponentFillVertically(JPanel(), 0)
+                .panel
 
         return panel!!
     }
@@ -48,9 +49,9 @@ class RuneSettingsConfigurable(private val project: Project) : Configurable {
     override fun isModified(): Boolean {
         val config = RuneProjectConfiguration.getInstance(project)
         return outputDirField.text != config.outputDirectory ||
-               outputPackageField.text != config.outputPackage ||
-               generateBuildersCheckbox.isSelected != config.generateBuilders ||
-               generateValidationCheckbox.isSelected != config.generateValidation
+            outputPackageField.text != config.outputPackage ||
+            generateBuildersCheckbox.isSelected != config.generateBuilders ||
+            generateValidationCheckbox.isSelected != config.generateValidation
     }
 
     override fun apply() {

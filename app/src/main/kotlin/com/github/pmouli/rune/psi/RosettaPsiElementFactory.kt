@@ -1,9 +1,9 @@
 package com.github.pmouli.rune.psi
 
+import com.github.pmouli.rune.RosettaFileType
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
-import com.github.pmouli.rune.RosettaFileType
 
 /**
  * Factory for creating PSI elements programmatically.
@@ -23,7 +23,10 @@ object RosettaPsiElementFactory {
      * @param text The Rosetta source code
      * @return A RosettaFile PSI element
      */
-    fun createFile(project: Project, text: String): RosettaFile {
+    fun createFile(
+        project: Project,
+        text: String,
+    ): RosettaFile {
         val name = "dummy.rosetta"
         return PsiFileFactory.getInstance(project)
             .createFileFromText(name, RosettaFileType.INSTANCE, text) as RosettaFile
@@ -38,7 +41,10 @@ object RosettaPsiElementFactory {
      * @param name The identifier name
      * @return A PSI element representing the identifier
      */
-    fun createIdentifier(project: Project, name: String): PsiElement {
+    fun createIdentifier(
+        project: Project,
+        name: String,
+    ): PsiElement {
         val file = createFile(project, "type $name:")
         // Navigate to the identifier token in the created file
         // This is a simplified implementation; actual implementation would use tree navigation
@@ -52,7 +58,10 @@ object RosettaPsiElementFactory {
      * @param name The type name
      * @return A PSI element representing the type declaration
      */
-    fun createTypeDeclaration(project: Project, name: String): PsiElement {
+    fun createTypeDeclaration(
+        project: Project,
+        name: String,
+    ): PsiElement {
         val file = createFile(project, "type $name: {}")
         return file.firstChild ?: file
     }

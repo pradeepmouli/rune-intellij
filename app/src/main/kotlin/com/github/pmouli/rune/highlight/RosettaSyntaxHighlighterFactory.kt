@@ -14,7 +14,10 @@ import com.intellij.openapi.vfs.VirtualFile
  * Thread-safe: Returns new highlighter instances per invocation.
  */
 class RosettaSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
-    override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?): SyntaxHighlighter {
+    override fun getSyntaxHighlighter(
+        project: Project?,
+        virtualFile: VirtualFile?,
+    ): SyntaxHighlighter {
         return RosettaSyntaxHighlighter()
     }
 }

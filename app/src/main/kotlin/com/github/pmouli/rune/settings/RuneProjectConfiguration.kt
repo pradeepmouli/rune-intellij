@@ -20,7 +20,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 @Service(Service.Level.PROJECT)
 @State(
     name = "RuneProjectConfiguration",
-    storages = [Storage("rune-dsl.xml")]
+    storages = [Storage("rune-dsl.xml")],
 )
 class RuneProjectConfiguration : PersistentStateComponent<RuneProjectConfiguration.State> {
     companion object {
@@ -47,7 +47,7 @@ class RuneProjectConfiguration : PersistentStateComponent<RuneProjectConfigurati
         var generateBuilders: Boolean = true,
         var generateValidation: Boolean = true,
         var generatorId: String = "rune-java-generator",
-        var grammarVersion: String = "5.0.0"
+        var grammarVersion: String = "5.0.0",
     )
 
     // Convenience accessors

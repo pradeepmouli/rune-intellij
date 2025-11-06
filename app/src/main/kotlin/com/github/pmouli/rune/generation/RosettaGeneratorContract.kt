@@ -32,10 +32,10 @@ interface RosettaGeneratorContract {
  * Generator metadata for display and configuration.
  */
 data class GeneratorMetadata(
-    val id: String,              // e.g., "rosetta-java-generator"
-    val displayName: String,     // e.g., "Rune DSL Java Generator"
-    val version: String,         // e.g., "5.0.0"
-    val supportedOptions: Map<String, OptionDescriptor> = emptyMap()
+    val id: String, // e.g., "rosetta-java-generator"
+    val displayName: String, // e.g., "Rune DSL Java Generator"
+    val version: String, // e.g., "5.0.0"
+    val supportedOptions: Map<String, OptionDescriptor> = emptyMap(),
 )
 
 /**
@@ -43,9 +43,9 @@ data class GeneratorMetadata(
  */
 data class OptionDescriptor(
     val key: String,
-    val type: OptionType,        // BOOLEAN, STRING, INT
+    val type: OptionType, // BOOLEAN, STRING, INT
     val defaultValue: String?,
-    val description: String
+    val description: String,
 )
 
 /**
@@ -58,11 +58,11 @@ enum class OptionType { BOOLEAN, STRING, INT }
  */
 data class GenerationRequest(
     val project: Project,
-    val sourceFiles: List<VirtualFile>,  // .rosetta files to process
-    val outputDirectory: Path,           // target for generated .java files
-    val outputPackage: String,           // Java package prefix
-    val options: Map<String, String> = emptyMap(),    // generator-specific options
-    val grammarVersion: String = "5.0.0" // Rune DSL grammar version
+    val sourceFiles: List<VirtualFile>, // .rosetta files to process
+    val outputDirectory: Path, // target for generated .java files
+    val outputPackage: String, // Java package prefix
+    val options: Map<String, String> = emptyMap(), // generator-specific options
+    val grammarVersion: String = "5.0.0", // Rune DSL grammar version
 )
 
 /**
@@ -71,16 +71,19 @@ data class GenerationRequest(
 data class GenerationResult(
     val success: Boolean,
     val generatedFiles: List<GeneratedFile>,
-    val diagnostics: List<GeneratorDiagnostic> = emptyList()
+    val diagnostics: List<GeneratorDiagnostic> = emptyList(),
 )
 
 /**
  * Information about a generated file.
  */
 data class GeneratedFile(
-    val sourcePath: Path,       // original .rosetta file
-    val outputPath: Path,       // generated .java file
-    val checksum: String        // SHA-256 of generated content for change detection
+    // original .rosetta file
+    val sourcePath: Path,
+    // generated .java file
+    val outputPath: Path,
+    // SHA-256 of generated content for change detection
+    val checksum: String,
 )
 
 /**
@@ -91,7 +94,7 @@ data class GeneratorDiagnostic(
     val message: String,
     val sourceFile: Path? = null,
     val line: Int? = null,
-    val column: Int? = null
+    val column: Int? = null,
 )
 
 /**

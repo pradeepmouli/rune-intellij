@@ -1,5 +1,9 @@
 package com.github.pmouli.rune.actions
 
+import com.github.pmouli.rune.RosettaFileType
+import com.github.pmouli.rune.generation.GenerationRequest
+import com.github.pmouli.rune.generation.RuneJavaGeneratorAdapter
+import com.github.pmouli.rune.settings.RuneProjectConfiguration
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -8,13 +12,10 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
+import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VirtualFile
-import com.github.pmouli.rune.RosettaFileType
-import com.github.pmouli.rune.generation.GenerationRequest
-import com.github.pmouli.rune.generation.RuneJavaGeneratorAdapter
-import com.github.pmouli.rune.settings.RuneProjectConfiguration
 import java.nio.file.Path
 
 /**
@@ -31,12 +32,13 @@ import java.nio.file.Path
  * Cancellable: User can cancel generation mid-process.
  *
  * Thread-safe: Uses ProgressManager and WriteAction for VFS modifications.
+ * DumbAware: File-based operation that doesn't require indexing.
  */
 class GeneratePreviewAction : AnAction(
     "Generate Code Preview",
     "Generate Java code from Rune DSL with preview",
-    null // TODO: Add icon
-) {
+    null, // TODO: Add icon
+), DumbAware {
     companion object {
         private val LOG = Logger.getInstance(GeneratePreviewAction::class.java)
     }
@@ -46,35 +48,38 @@ class GeneratePreviewAction : AnAction(
         val selectedFiles = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY) ?: return
 
         // Filter to .rosetta files
-        val rosettaFiles = selectedFiles.flatMap { file ->
-            if (file.isDirectory) {
-                findRosettaFiles(file)
-            } else if (file.fileType == RosettaFileType.INSTANCE) {
-                listOf(file)
-            } else {
-                emptyList()
+        val rosettaFiles =
+            selectedFiles.flatMap { file ->
+                if (file.isDirectory) {
+                    findRosettaFiles(file)
+                } else if (file.fileType == RosettaFileType.INSTANCE) {
+                    listOf(file)
+                } else {
+                    emptyList()
+                }
             }
-        }
 
         if (rosettaFiles.isEmpty()) {
             Messages.showInfoMessage(
                 project,
                 "No Rune DSL (.rosetta) files selected",
-                "Generate Code"
+                "Generate Code",
             )
             return
         }
 
         // Run generation in background
-        ProgressManager.getInstance().run(object : Task.Backgroundable(
-            project,
-            "Generating Java Code from Rune DSL",
-            true // cancellable
-        ) {
-            override fun run(indicator: ProgressIndicator) {
-                generateCode(project, rosettaFiles, indicator)
-            }
-        })
+        ProgressManager.getInstance().run(
+            object : Task.Backgroundable(
+                project,
+                "Generating Java Code from Rune DSL",
+                true, // cancellable
+            ) {
+                override fun run(indicator: ProgressIndicator) {
+                    generateCode(project, rosettaFiles, indicator)
+                }
+            },
+        )
     }
 
     override fun update(e: AnActionEvent) {
@@ -83,31 +88,33 @@ class GeneratePreviewAction : AnAction(
 
         // Enable action only when project is open and files are selected
         e.presentation.isEnabledAndVisible = project != null &&
-                                              selectedFiles != null &&
-                                              selectedFiles.isNotEmpty()
+            selectedFiles != null &&
+            selectedFiles.isNotEmpty()
     }
 
     private fun generateCode(
         project: Project,
         rosettaFiles: List<VirtualFile>,
-        indicator: ProgressIndicator
+        indicator: ProgressIndicator,
     ) {
         indicator.text = "Loading configuration..."
         val config = RuneProjectConfiguration.getInstance(project)
 
         // Prepare generation request
         val outputDir = Path.of(project.basePath ?: ".", config.outputDirectory)
-        val request = GenerationRequest(
-            project = project,
-            sourceFiles = rosettaFiles,
-            outputDirectory = outputDir,
-            outputPackage = config.outputPackage,
-            options = mapOf(
-                "generateBuilders" to config.generateBuilders.toString(),
-                "generateValidation" to config.generateValidation.toString()
-            ),
-            grammarVersion = config.grammarVersion
-        )
+        val request =
+            GenerationRequest(
+                project = project,
+                sourceFiles = rosettaFiles,
+                outputDirectory = outputDir,
+                outputPackage = config.outputPackage,
+                options =
+                    mapOf(
+                        "generateBuilders" to config.generateBuilders.toString(),
+                        "generateValidation" to config.generateValidation.toString(),
+                    ),
+                grammarVersion = config.grammarVersion,
+            )
 
         try {
             indicator.text = "Generating code from ${rosettaFiles.size} file(s)..."
@@ -130,18 +137,19 @@ class GeneratePreviewAction : AnAction(
                     Messages.showInfoMessage(
                         project,
                         "Generated ${result.generatedFiles.size} file(s):\n" +
-                        result.generatedFiles.joinToString("\n") { it.outputPath.fileName.toString() },
-                        "Generation Complete"
+                            result.generatedFiles.joinToString("\n") { it.outputPath.fileName.toString() },
+                        "Generation Complete",
                     )
                 } else {
-                    val errors = result.diagnostics
-                        .filter { it.severity == com.github.pmouli.rune.generation.DiagnosticSeverity.ERROR }
-                        .joinToString("\n") { it.message }
+                    val errors =
+                        result.diagnostics
+                            .filter { it.severity == com.github.pmouli.rune.generation.DiagnosticSeverity.ERROR }
+                            .joinToString("\n") { it.message }
 
                     Messages.showErrorDialog(
                         project,
                         "Generation failed:\n$errors",
-                        "Generation Error"
+                        "Generation Error",
                     )
                 }
             }
@@ -151,7 +159,7 @@ class GeneratePreviewAction : AnAction(
                 Messages.showErrorDialog(
                     project,
                     "Generation failed: ${e.message}",
-                    "Generation Error"
+                    "Generation Error",
                 )
             }
         }
@@ -159,7 +167,7 @@ class GeneratePreviewAction : AnAction(
 
     private fun findRosettaFiles(directory: VirtualFile): List<VirtualFile> {
         val result = mutableListOf<VirtualFile>()
-        
+
         fun visit(file: VirtualFile) {
             if (file.isDirectory) {
                 file.children.forEach { visit(it) }
@@ -167,7 +175,7 @@ class GeneratePreviewAction : AnAction(
                 result.add(file)
             }
         }
-        
+
         visit(directory)
         return result
     }

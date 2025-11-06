@@ -1,13 +1,13 @@
 package com.github.pmouli.rune.reference
 
+import com.github.pmouli.rune.psi.RosettaFile
+import com.github.pmouli.rune.psi.RosettaNamedElement
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.ResolveResult
 import com.intellij.psi.util.PsiTreeUtil
-import com.github.pmouli.rune.psi.RosettaFile
-import com.github.pmouli.rune.psi.RosettaNamedElement
 
 /**
  * Reference implementation for Rune DSL (Rosetta) identifiers.
@@ -27,9 +27,8 @@ import com.github.pmouli.rune.psi.RosettaNamedElement
  */
 class RosettaReference(
     element: PsiElement,
-    textRange: TextRange
+    textRange: TextRange,
 ) : PsiReferenceBase<PsiElement>(element, textRange), PsiPolyVariantReference {
-
     /**
      * Returns the name being referenced (the identifier text).
      */
@@ -51,10 +50,10 @@ class RosettaReference(
      */
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val file = element.containingFile as? RosettaFile ?: return ResolveResult.EMPTY_ARRAY
-        
+
         // Search for named elements in the file and project
         val declarations = findDeclarationsInFile(file)
-        
+
         return declarations
             .map { PsiElementResolveResult(it) }
             .toTypedArray()
@@ -65,14 +64,14 @@ class RosettaReference(
      */
     private fun findDeclarationsInFile(file: RosettaFile): List<RosettaNamedElement> {
         val result = mutableListOf<RosettaNamedElement>()
-        
+
         // Find all named elements in the file
         PsiTreeUtil.findChildrenOfType(file, RosettaNamedElement::class.java).forEach { namedElement ->
             if (namedElement.name == referenceName) {
                 result.add(namedElement)
             }
         }
-        
+
         return result
     }
 
@@ -82,7 +81,7 @@ class RosettaReference(
      */
     override fun getVariants(): Array<Any> {
         val file = element.containingFile as? RosettaFile ?: return emptyArray()
-        
+
         // Return all named elements in the file as completion suggestions
         return PsiTreeUtil.findChildrenOfType(file, RosettaNamedElement::class.java)
             .mapNotNull { it.name }
@@ -94,6 +93,7 @@ class RosettaReference(
      */
     private class PsiElementResolveResult(private val psiElement: PsiElement) : ResolveResult {
         override fun getElement(): PsiElement = psiElement
+
         override fun isValidResult(): Boolean = true
     }
 }

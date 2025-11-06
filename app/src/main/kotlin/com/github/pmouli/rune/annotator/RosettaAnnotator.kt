@@ -1,14 +1,15 @@
 package com.github.pmouli.rune.annotator
 
+import com.github.pmouli.rune.psi.RosettaFile
+import com.github.pmouli.rune.psi.RosettaTokenTypes
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
+import com.intellij.openapi.project.DumbAware
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import com.github.pmouli.rune.psi.RosettaFile
-import com.github.pmouli.rune.psi.RosettaTokenTypes
 
 /**
  * Annotator for Rune DSL (Rosetta) diagnostics and semantic highlighting.
@@ -23,29 +24,33 @@ import com.github.pmouli.rune.psi.RosettaTokenTypes
  * Target: <300ms p90 latency per constitution.
  *
  * Thread-safe: Uses ReadAction for PSI access.
+ * DumbAware: Performs syntax-based validation that doesn't require indexing.
  */
-class RosettaAnnotator : Annotator {
-    override fun annotate(element: PsiElement, holder: AnnotationHolder) {
+class RosettaAnnotator : Annotator, DumbAware {
+    override fun annotate(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         ReadAction.run<Throwable> {
             when {
                 // Validate namespace declarations (should appear at file start)
                 isNamespaceDeclaration(element) -> validateNamespace(element, holder)
-                
+
                 // Validate type declarations
                 isTypeDeclaration(element) -> validateType(element, holder)
-                
+
                 // Validate function declarations
                 isFunctionDeclaration(element) -> validateFunction(element, holder)
-                
+
                 // Validate enum declarations
                 isEnumDeclaration(element) -> validateEnum(element, holder)
-                
+
                 // Validate attribute declarations
                 isAttributeDeclaration(element) -> validateAttribute(element, holder)
-                
+
                 // Validate cardinality expressions
                 isCardinality(element) -> validateCardinality(element, holder)
-                
+
                 // Semantic highlighting for identifiers
                 isIdentifier(element) -> highlightIdentifier(element, holder)
             }
@@ -76,7 +81,7 @@ class RosettaAnnotator : Annotator {
 
     private fun isCardinality(element: PsiElement): Boolean {
         return element.text.matches(Regex("\\(\\d+\\.\\.\\d+\\)")) ||
-               element.text.matches(Regex("\\(\\d+\\.\\.\\.\\*\\)"))
+            element.text.matches(Regex("\\(\\d+\\.\\.\\.\\*\\)"))
     }
 
     private fun isIdentifier(element: PsiElement): Boolean {
@@ -96,78 +101,97 @@ class RosettaAnnotator : Annotator {
         return false
     }
 
-    private fun validateNamespace(element: PsiElement, holder: AnnotationHolder) {
+    private fun validateNamespace(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         // Namespace should be at the top of the file (before any type/func/enum)
         val file = element.containingFile as? RosettaFile ?: return
-        val firstDeclaration = PsiTreeUtil.findChildOfAnyType(
-            file,
-            element::class.java
-        )
-        
+        val firstDeclaration =
+            PsiTreeUtil.findChildOfAnyType(
+                file,
+                element::class.java,
+            )
+
         if (firstDeclaration != element) {
             holder.newAnnotation(
                 HighlightSeverity.WARNING,
-                "Namespace declaration should appear at the beginning of the file"
+                "Namespace declaration should appear at the beginning of the file",
             )
                 .range(element)
                 .create()
         }
     }
 
-    private fun validateType(element: PsiElement, holder: AnnotationHolder) {
+    private fun validateType(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         // Basic validation: type must have a name
         val nextElement = PsiTreeUtil.skipWhitespacesForward(element)
         if (nextElement?.node?.elementType != RosettaTokenTypes.IDENTIFIER) {
             holder.newAnnotation(
                 HighlightSeverity.ERROR,
-                "Type declaration must have a name"
+                "Type declaration must have a name",
             )
                 .range(element)
                 .create()
         }
     }
 
-    private fun validateFunction(element: PsiElement, holder: AnnotationHolder) {
+    private fun validateFunction(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         // Basic validation: function must have a name
         val nextElement = PsiTreeUtil.skipWhitespacesForward(element)
         if (nextElement?.node?.elementType != RosettaTokenTypes.IDENTIFIER) {
             holder.newAnnotation(
                 HighlightSeverity.ERROR,
-                "Function declaration must have a name"
+                "Function declaration must have a name",
             )
                 .range(element)
                 .create()
         }
     }
 
-    private fun validateEnum(element: PsiElement, holder: AnnotationHolder) {
+    private fun validateEnum(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         // Basic validation: enum must have a name
         val nextElement = PsiTreeUtil.skipWhitespacesForward(element)
         if (nextElement?.node?.elementType != RosettaTokenTypes.IDENTIFIER) {
             holder.newAnnotation(
                 HighlightSeverity.ERROR,
-                "Enum declaration must have a name"
+                "Enum declaration must have a name",
             )
                 .range(element)
                 .create()
         }
     }
 
-    private fun validateAttribute(element: PsiElement, holder: AnnotationHolder) {
+    private fun validateAttribute(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         // Attributes should have: name, type, and optional cardinality
         // This is a simplified validation; full validation would check the AST structure
     }
 
-    private fun validateCardinality(element: PsiElement, holder: AnnotationHolder) {
+    private fun validateCardinality(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         val text = element.text
         val match = Regex("\\((\\d+)\\.\\.(\\d+|\\*)\\)").find(text)
-        
+
         if (match != null) {
             val (lower, upper) = match.destructured
             if (upper != "*" && lower.toInt() > upper.toInt()) {
                 holder.newAnnotation(
                     HighlightSeverity.ERROR,
-                    "Lower bound ($lower) cannot be greater than upper bound ($upper)"
+                    "Lower bound ($lower) cannot be greater than upper bound ($upper)",
                 )
                     .range(element)
                     .create()
@@ -175,10 +199,13 @@ class RosettaAnnotator : Annotator {
         }
     }
 
-    private fun highlightIdentifier(element: PsiElement, holder: AnnotationHolder) {
+    private fun highlightIdentifier(
+        element: PsiElement,
+        holder: AnnotationHolder,
+    ) {
         // Apply semantic highlighting based on context
         val parent = element.parent
-        
+
         when {
             // Type names after "type" keyword
             isTypeNamePosition(element) -> {
@@ -187,7 +214,7 @@ class RosettaAnnotator : Annotator {
                     .textAttributes(DefaultLanguageHighlighterColors.CLASS_NAME)
                     .create()
             }
-            
+
             // Function names after "func" keyword
             isFunctionNamePosition(element) -> {
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION)

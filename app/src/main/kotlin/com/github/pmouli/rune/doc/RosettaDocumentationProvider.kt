@@ -1,12 +1,12 @@
 package com.github.pmouli.rune.doc
 
+import com.github.pmouli.rune.psi.RosettaNamedElement
+import com.github.pmouli.rune.psi.RosettaTokenTypes
 import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
-import com.github.pmouli.rune.psi.RosettaNamedElement
-import com.github.pmouli.rune.psi.RosettaTokenTypes
 
 /**
  * Documentation provider for Rune DSL (Rosetta).
@@ -25,9 +25,12 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
     /**
      * Generates documentation HTML for the given element.
      */
-    override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
+    override fun generateDoc(
+        element: PsiElement?,
+        originalElement: PsiElement?,
+    ): String? {
         if (element == null) return null
-        
+
         return when {
             isTypeDeclaration(element) -> generateTypeDoc(element)
             isFunctionDeclaration(element) -> generateFunctionDoc(element)
@@ -45,10 +48,10 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
         editor: Editor,
         file: PsiFile,
         contextElement: PsiElement?,
-        targetOffset: Int
+        targetOffset: Int,
     ): PsiElement? {
         if (contextElement == null) return null
-        
+
         // If hovering over an identifier, try to resolve its reference
         if (contextElement.node.elementType == RosettaTokenTypes.IDENTIFIER) {
             val parent = contextElement.parent
@@ -56,23 +59,23 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
                 return parent
             }
         }
-        
+
         return contextElement
     }
 
     private fun isTypeDeclaration(element: PsiElement): Boolean {
         return element.node.elementType == RosettaTokenTypes.TYPE ||
-               (element.prevSibling?.node?.elementType == RosettaTokenTypes.TYPE)
+            (element.prevSibling?.node?.elementType == RosettaTokenTypes.TYPE)
     }
 
     private fun isFunctionDeclaration(element: PsiElement): Boolean {
         return element.node.elementType == RosettaTokenTypes.FUNC ||
-               (element.prevSibling?.node?.elementType == RosettaTokenTypes.FUNC)
+            (element.prevSibling?.node?.elementType == RosettaTokenTypes.FUNC)
     }
 
     private fun isEnumDeclaration(element: PsiElement): Boolean {
         return element.node.elementType == RosettaTokenTypes.ENUM ||
-               (element.prevSibling?.node?.elementType == RosettaTokenTypes.ENUM)
+            (element.prevSibling?.node?.elementType == RosettaTokenTypes.ENUM)
     }
 
     private fun isAttributeDeclaration(element: PsiElement): Boolean {
@@ -95,7 +98,7 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
     private fun generateTypeDoc(element: PsiElement): String {
         val name = getElementName(element) ?: "Unknown"
         val extendsClause = findExtendsClause(element)
-        
+
         return buildString {
             append("<html><body>")
             append("<h3>Type: <b>$name</b></h3>")
@@ -109,7 +112,7 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
 
     private fun generateFunctionDoc(element: PsiElement): String {
         val name = getElementName(element) ?: "Unknown"
-        
+
         return buildString {
             append("<html><body>")
             append("<h3>Function: <b>$name</b></h3>")
@@ -120,7 +123,7 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
 
     private fun generateEnumDoc(element: PsiElement): String {
         val name = getElementName(element) ?: "Unknown"
-        
+
         return buildString {
             append("<html><body>")
             append("<h3>Enum: <b>$name</b></h3>")
@@ -131,7 +134,7 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
 
     private fun generateAttributeDoc(element: PsiElement): String {
         val name = getElementName(element) ?: "Unknown"
-        
+
         return buildString {
             append("<html><body>")
             append("<h3>Attribute: <b>$name</b></h3>")
@@ -142,7 +145,7 @@ class RosettaDocumentationProvider : AbstractDocumentationProvider() {
 
     private fun generateNamedElementDoc(element: RosettaNamedElement): String {
         val name = element.name ?: "Unknown"
-        
+
         return buildString {
             append("<html><body>")
             append("<h3>$name</h3>")

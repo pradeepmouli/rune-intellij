@@ -1,5 +1,9 @@
 package com.github.pmouli.rune
 
+import com.github.pmouli.rune.lexer.RosettaLexerAdapter
+import com.github.pmouli.rune.parser.RosettaParser
+import com.github.pmouli.rune.psi.RosettaFile
+import com.github.pmouli.rune.psi.RosettaTokenTypes
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
 import com.intellij.lang.PsiParser
@@ -10,10 +14,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import com.github.pmouli.rune.lexer.RosettaLexerAdapter
-import com.github.pmouli.rune.parser.RosettaParser
-import com.github.pmouli.rune.psi.RosettaFile
-import com.github.pmouli.rune.psi.RosettaTokenTypes
 
 /**
  * Parser definition for Rune DSL (Rosetta).
@@ -27,14 +27,15 @@ import com.github.pmouli.rune.psi.RosettaTokenTypes
 class RosettaParserDefinition : ParserDefinition {
     companion object {
         val FILE = IFileElementType(RosettaLanguage.INSTANCE)
-        
+
         val COMMENTS = TokenSet.create(RosettaTokenTypes.COMMENT)
-        
-        val STRINGS = TokenSet.create(
-            RosettaTokenTypes.STRING_LITERAL,
-            RosettaTokenTypes.PATTERN_LITERAL
-        )
-        
+
+        val STRINGS =
+            TokenSet.create(
+                RosettaTokenTypes.STRING_LITERAL,
+                RosettaTokenTypes.PATTERN_LITERAL,
+            )
+
         val WHITESPACE = TokenSet.EMPTY // Handled by lexer returning WHITE_SPACE token
     }
 

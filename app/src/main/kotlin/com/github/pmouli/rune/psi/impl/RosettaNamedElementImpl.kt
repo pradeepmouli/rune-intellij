@@ -1,11 +1,11 @@
 package com.github.pmouli.rune.psi.impl
 
+import com.github.pmouli.rune.psi.RosettaNamedElement
+import com.github.pmouli.rune.psi.RosettaPsiElementFactory
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import com.github.pmouli.rune.psi.RosettaNamedElement
-import com.github.pmouli.rune.psi.RosettaPsiElementFactory
 
 /**
  * Base implementation for named PSI elements in Rune DSL.
@@ -21,14 +21,14 @@ abstract class RosettaNamedElementImpl(node: ASTNode) : ASTWrapperPsiElement(nod
      * Subclasses can override to provide custom name resolution logic.
      */
     override fun getName(): String? {
-        return nameIdentifier?.text
+        return getNameIdentifier()?.text
     }
 
     /**
      * Returns the identifier element representing the name of this element.
      * By default, finds the first IDENTIFIER token in the subtree.
      */
-    override fun getNameIdentifier(): PsiElement? {
+    fun getNameIdentifier(): PsiElement? {
         // Find first IDENTIFIER token in this element's subtree
         return PsiTreeUtil.findChildOfAnyType(this, PsiElement::class.java)?.let { child ->
             if (child.node.elementType.toString().contains("IDENTIFIER")) child else null
@@ -41,7 +41,7 @@ abstract class RosettaNamedElementImpl(node: ASTNode) : ASTWrapperPsiElement(nod
      */
     override fun setName(name: String): RosettaNamedElement {
         val newIdentifier = RosettaPsiElementFactory.createIdentifier(project, name)
-        nameIdentifier?.replace(newIdentifier)
+        getNameIdentifier()?.replace(newIdentifier)
         return this
     }
 
@@ -49,6 +49,6 @@ abstract class RosettaNamedElementImpl(node: ASTNode) : ASTWrapperPsiElement(nod
      * Returns the text offset of the name identifier for navigation purposes.
      */
     override fun getTextOffset(): Int {
-        return nameIdentifier?.textOffset ?: super.getTextOffset()
+        return getNameIdentifier()?.textOffset ?: super.getTextOffset()
     }
 }

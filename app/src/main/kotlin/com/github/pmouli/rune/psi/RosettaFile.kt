@@ -1,10 +1,10 @@
 package com.github.pmouli.rune.psi
 
+import com.github.pmouli.rune.RosettaFileType
+import com.github.pmouli.rune.RosettaLanguage
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
-import com.github.pmouli.rune.RosettaFileType
-import com.github.pmouli.rune.RosettaLanguage
 
 /**
  * PSI file element for Rune DSL (.rosetta) files.

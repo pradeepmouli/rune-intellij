@@ -10,7 +10,6 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.application.ReadAction
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.util.ProcessingContext
-import com.github.pmouli.rune.psi.RosettaTokenTypes
 
 /**
  * Code completion contributor for Rune DSL (Rosetta).
@@ -29,25 +28,37 @@ import com.github.pmouli.rune.psi.RosettaTokenTypes
 class RosettaCompletionContributor : CompletionContributor() {
     companion object {
         // Rune DSL keywords for completion
-        private val KEYWORDS = listOf(
-            "namespace", "type", "func", "enum", "choice", "alias",
-            "annotation", "scheme", "calculation", "reporting",
-            "extends", "condition", "optional", "one-of", "required",
-            "if", "then", "else", "and", "or", "not",
-            "exists", "only", "is", "absent",
-            "synonym", "metadata", "reference", "id", "key"
-        )
+        private val KEYWORDS =
+            listOf(
+                "namespace", "type", "func", "enum", "choice", "alias",
+                "annotation", "scheme", "calculation", "reporting",
+                "extends", "condition", "optional", "one-of", "required",
+                "if", "then", "else", "and", "or", "not",
+                "exists", "only", "is", "absent",
+                "synonym", "metadata", "reference", "id", "key",
+            )
 
         // Built-in primitive types
-        private val PRIMITIVE_TYPES = listOf(
-            "string", "int", "number", "boolean",
-            "date", "time", "dateTime", "zonedDateTime"
-        )
+        private val PRIMITIVE_TYPES =
+            listOf(
+                "string",
+                "int",
+                "number",
+                "boolean",
+                "date",
+                "time",
+                "dateTime",
+                "zonedDateTime",
+            )
 
         // Common cardinality patterns
-        private val CARDINALITY_PATTERNS = listOf(
-            "(0..1)", "(1..1)", "(0..*)", "(1..*)"
-        )
+        private val CARDINALITY_PATTERNS =
+            listOf(
+                "(0..1)",
+                "(1..1)",
+                "(0..*)",
+                "(1..*)",
+            )
     }
 
     init {
@@ -55,21 +66,21 @@ class RosettaCompletionContributor : CompletionContributor() {
         extend(
             CompletionType.BASIC,
             PlatformPatterns.psiElement(),
-            KeywordCompletionProvider()
+            KeywordCompletionProvider(),
         )
 
         // Complete primitive types in type reference positions
         extend(
             CompletionType.BASIC,
             PlatformPatterns.psiElement(),
-            PrimitiveTypeCompletionProvider()
+            PrimitiveTypeCompletionProvider(),
         )
 
         // Complete cardinality patterns after type references
         extend(
             CompletionType.BASIC,
             PlatformPatterns.psiElement(),
-            CardinalityCompletionProvider()
+            CardinalityCompletionProvider(),
         )
     }
 
@@ -80,14 +91,14 @@ class RosettaCompletionContributor : CompletionContributor() {
         override fun addCompletions(
             parameters: CompletionParameters,
             context: ProcessingContext,
-            result: CompletionResultSet
+            result: CompletionResultSet,
         ) {
             ReadAction.run<Throwable> {
                 KEYWORDS.forEach { keyword ->
                     result.addElement(
                         LookupElementBuilder.create(keyword)
                             .bold()
-                            .withTypeText("keyword")
+                            .withTypeText("keyword"),
                     )
                 }
             }
@@ -101,14 +112,14 @@ class RosettaCompletionContributor : CompletionContributor() {
         override fun addCompletions(
             parameters: CompletionParameters,
             context: ProcessingContext,
-            result: CompletionResultSet
+            result: CompletionResultSet,
         ) {
             ReadAction.run<Throwable> {
                 PRIMITIVE_TYPES.forEach { type ->
                     result.addElement(
                         LookupElementBuilder.create(type)
                             .withTypeText("primitive type")
-                            .withIcon(null) // TODO: Add type icon
+                            .withIcon(null), // TODO: Add type icon
                     )
                 }
             }
@@ -122,7 +133,7 @@ class RosettaCompletionContributor : CompletionContributor() {
         override fun addCompletions(
             parameters: CompletionParameters,
             context: ProcessingContext,
-            result: CompletionResultSet
+            result: CompletionResultSet,
         ) {
             ReadAction.run<Throwable> {
                 CARDINALITY_PATTERNS.forEach { pattern ->
@@ -133,10 +144,10 @@ class RosettaCompletionContributor : CompletionContributor() {
                                 // Move cursor inside parentheses for custom cardinality
                                 if (pattern == "(0..1)") {
                                     insertContext.editor.caretModel.moveToOffset(
-                                        insertContext.tailOffset
+                                        insertContext.tailOffset,
                                     )
                                 }
-                            }
+                            },
                     )
                 }
             }

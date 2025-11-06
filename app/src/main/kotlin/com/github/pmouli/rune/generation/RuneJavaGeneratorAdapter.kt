@@ -21,35 +21,40 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
         private val LOG = Logger.getInstance(RuneJavaGeneratorAdapter::class.java)
     }
 
-    override val metadata = GeneratorMetadata(
-        id = "rune-java-generator",
-        displayName = "Rune DSL Java Generator",
-        version = "5.0.0",
-        supportedOptions = mapOf(
-            "generateBuilders" to OptionDescriptor(
-                key = "generateBuilders",
-                type = OptionType.BOOLEAN,
-                defaultValue = "true",
-                description = "Generate builder classes for Rosetta types"
-            ),
-            "generateValidation" to OptionDescriptor(
-                key = "generateValidation",
-                type = OptionType.BOOLEAN,
-                defaultValue = "true",
-                description = "Generate validation logic"
-            ),
-            "packagePrefix" to OptionDescriptor(
-                key = "packagePrefix",
-                type = OptionType.STRING,
-                defaultValue = "com.example.generated",
-                description = "Java package prefix for generated classes"
-            )
+    override val metadata =
+        GeneratorMetadata(
+            id = "rune-java-generator",
+            displayName = "Rune DSL Java Generator",
+            version = "5.0.0",
+            supportedOptions =
+                mapOf(
+                    "generateBuilders" to
+                        OptionDescriptor(
+                            key = "generateBuilders",
+                            type = OptionType.BOOLEAN,
+                            defaultValue = "true",
+                            description = "Generate builder classes for Rosetta types",
+                        ),
+                    "generateValidation" to
+                        OptionDescriptor(
+                            key = "generateValidation",
+                            type = OptionType.BOOLEAN,
+                            defaultValue = "true",
+                            description = "Generate validation logic",
+                        ),
+                    "packagePrefix" to
+                        OptionDescriptor(
+                            key = "packagePrefix",
+                            type = OptionType.STRING,
+                            defaultValue = "com.example.generated",
+                            description = "Java package prefix for generated classes",
+                        ),
+                ),
         )
-    )
 
     override fun generate(request: GenerationRequest): GenerationResult {
         LOG.info("Starting Rune DSL code generation for ${request.sourceFiles.size} files")
-        
+
         return try {
             // TODO: Integrate with actual Rune DSL generator
             // For now, create a stub implementation that demonstrates the flow
@@ -59,15 +64,16 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
             GenerationResult(
                 success = false,
                 generatedFiles = emptyList(),
-                diagnostics = listOf(
-                    GeneratorDiagnostic(
-                        severity = DiagnosticSeverity.ERROR,
-                        message = "Generation failed: ${e.message}",
-                        sourceFile = null,
-                        line = null,
-                        column = null
-                    )
-                )
+                diagnostics =
+                    listOf(
+                        GeneratorDiagnostic(
+                            severity = DiagnosticSeverity.ERROR,
+                            message = "Generation failed: ${e.message}",
+                            sourceFile = null,
+                            line = null,
+                            column = null,
+                        ),
+                    ),
             )
         }
     }
@@ -92,10 +98,11 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
                 val outputPath = request.outputDirectory.resolve(javaFileName)
 
                 // Generate stub Java class
-                val javaContent = generateStubJavaClass(
-                    className = fileName.replaceFirstChar { it.uppercase() },
-                    packageName = request.outputPackage
-                )
+                val javaContent =
+                    generateStubJavaClass(
+                        className = fileName.replaceFirstChar { it.uppercase() },
+                        packageName = request.outputPackage,
+                    )
 
                 Files.writeString(outputPath, javaContent)
 
@@ -106,8 +113,8 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
                     GeneratedFile(
                         sourcePath = sourcePath,
                         outputPath = outputPath,
-                        checksum = checksum
-                    )
+                        checksum = checksum,
+                    ),
                 )
 
                 diagnostics.add(
@@ -116,8 +123,8 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
                         message = "Generated $javaFileName",
                         sourceFile = sourcePath,
                         line = null,
-                        column = null
-                    )
+                        column = null,
+                    ),
                 )
             } catch (e: Exception) {
                 diagnostics.add(
@@ -126,8 +133,8 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
                         message = "Failed to generate from ${sourceFile.name}: ${e.message}",
                         sourceFile = Path.of(sourceFile.path),
                         line = null,
-                        column = null
-                    )
+                        column = null,
+                    ),
                 )
             }
         }
@@ -135,11 +142,14 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
         return GenerationResult(
             success = diagnostics.none { it.severity == DiagnosticSeverity.ERROR },
             generatedFiles = generatedFiles,
-            diagnostics = diagnostics
+            diagnostics = diagnostics,
         )
     }
 
-    private fun generateStubJavaClass(className: String, packageName: String): String {
+    private fun generateStubJavaClass(
+        className: String,
+        packageName: String,
+    ): String {
         return """
             package $packageName;
             
@@ -154,7 +164,7 @@ class RuneJavaGeneratorAdapter : RosettaGeneratorContract {
                     // Constructor
                 }
             }
-        """.trimIndent()
+            """.trimIndent()
     }
 
     private fun calculateChecksum(content: String): String {
