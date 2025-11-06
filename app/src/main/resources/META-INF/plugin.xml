@@ -1,0 +1,31 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. Must be unique across all plugins on the Marketplace. -->
+    <id>com.github.pmouli.rune-intellij</id>
+
+    <!-- Public plugin name should be written in Title Case. -->
+    <name>Rune IntelliJ Plugin</name>
+
+    <!-- Plugin vendor: your organization or your name -->
+    <vendor email="support@example.com" url="https://github.com/pmouli/rune-intellij">pmouli</vendor>
+
+    <!-- Description of the plugin displayed in the Marketplace and IDE settings. -->
+    <description><![CDATA[
+        A minimal IntelliJ Platform plugin built with Kotlin, following best practices for threading,
+        PSI/VFS safety, and clean architecture.
+    ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points and actions -->
+    <actions>
+        <action id="Rune.HelloAction"
+                class="com.github.pmouli.rune.actions.HelloAction"
+                text="Hello Rune"
+                description="Sample action to demonstrate Rune plugin">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
