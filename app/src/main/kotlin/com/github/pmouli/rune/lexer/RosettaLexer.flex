@@ -49,7 +49,6 @@ PATTERN=~\"([^\\\"\r\n]|\\[^\r\n])*\"
   "choice"                    { return RosettaTokenTypes.CHOICE; }
   "alias"                     { return RosettaTokenTypes.ALIAS; }
   "annotation"                { return RosettaTokenTypes.ANNOTATION; }
-  "scheme"                    { return RosettaTokenTypes.SCHEME; }
   "calculation"               { return RosettaTokenTypes.CALCULATION; }
   "reporting"                 { return RosettaTokenTypes.REPORTING; }
 
