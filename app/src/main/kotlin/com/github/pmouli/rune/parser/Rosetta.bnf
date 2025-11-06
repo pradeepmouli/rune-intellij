@@ -1,0 +1,172 @@
+{
+  parserClass="com.github.pmouli.rune.parser.RosettaParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+  psiClassPrefix="Rosetta"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.pmouli.rune.psi"
+  psiImplPackage="com.github.pmouli.rune.psi.impl"
+  elementTypeHolderClass="com.github.pmouli.rune.psi.RosettaElementTypes"
+  elementTypeClass="com.github.pmouli.rune.psi.RosettaElementType"
+  tokenTypeClass="com.github.pmouli.rune.psi.RosettaTokenType"
+  tokens=[
+    NAMESPACE='namespace'
+    TYPE='type'
+    FUNC='func'
+    ENUM='enum'
+    CHOICE='choice'
+    ALIAS='alias'
+    ANNOTATION='annotation'
+    SCHEME='scheme'
+    CALCULATION='calculation'
+    REPORTING='reporting'
+    EXTENDS='extends'
+    CONDITION='condition'
+    OPTIONAL='optional'
+    ONE_OF='one-of'
+    REQUIRED='required'
+    IF='if'
+    THEN='then'
+    ELSE='else'
+    AND='and'
+    OR='or'
+    NOT='not'
+    EXISTS='exists'
+    ONLY='only'
+    IS='is'
+    ABSENT='absent'
+    STRING_TYPE='string'
+    INT_TYPE='int'
+    NUMBER_TYPE='number'
+    BOOLEAN_TYPE='boolean'
+    DATE_TYPE='date'
+    TIME_TYPE='time'
+    DATETIME_TYPE='dateTime'
+    ZONEDDATETIME_TYPE='zonedDateTime'
+    SYNONYM='synonym'
+    METADATA='metadata'
+    REFERENCE='reference'
+    ID='id'
+    KEY='key'
+    COLON=':'
+    SEMICOLON=';'
+    COMMA=','
+    DOT='.'
+    EQUALS='='
+    LPAREN='('
+    RPAREN=')'
+    LBRACKET='['
+    RBRACKET=']'
+    LBRACE='{'
+    RBRACE='}'
+    LT='<'
+    GT='>'
+    LE='<='
+    GE='>='
+    EQ='=='
+    NE='!='
+    PLUS='+'
+    MINUS='-'
+    MULT='*'
+    DIV='/'
+    ARROW='->'
+    DOTDOT='..'
+    IDENTIFIER='regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+    INTEGER_LITERAL='regexp:[0-9]+'
+    STRING_LITERAL='regexp:"([^\\"\r\n]|\\[^\r\n])*"'
+    PATTERN_LITERAL='regexp:~"([^\\"\r\n]|\\[^\r\n])*"'
+    COMMENT='regexp:(//[^\r\n]*)|(/\*([^*]|\*+[^*/])*\*+/)'
+  ]
+}
+
+// Root rule
+rosettaFile ::= namespaceDeclaration? rootElement*
+
+// Namespace declaration
+namespaceDeclaration ::= NAMESPACE qualifiedName
+
+qualifiedName ::= IDENTIFIER (DOT IDENTIFIER)*
+
+// Root elements (types, functions, enums, etc.)
+rootElement ::= typeDeclaration
+              | functionDeclaration
+              | enumDeclaration
+              | choiceDeclaration
+              | aliasDeclaration
+              | annotationDeclaration
+
+// Type declaration: type Foo: ... { attributes }
+typeDeclaration ::= TYPE IDENTIFIER (COLON)? (EXTENDS qualifiedName)? LBRACE attributeDeclaration* RBRACE
+
+// Attribute declaration: attrName string (0..1)
+attributeDeclaration ::= IDENTIFIER typeReference cardinality?
+
+// Type reference: string, int, or user-defined type
+typeReference ::= primitiveType | qualifiedName
+
+primitiveType ::= STRING_TYPE
+                | INT_TYPE
+                | NUMBER_TYPE
+                | BOOLEAN_TYPE
+                | DATE_TYPE
+                | TIME_TYPE
+                | DATETIME_TYPE
+                | ZONEDDATETIME_TYPE
+
+// Cardinality: (0..1), (1..1), (0..*), etc.
+cardinality ::= LPAREN INTEGER_LITERAL DOTDOT (INTEGER_LITERAL | MULT) RPAREN
+
+// Function declaration: func Bar: ... output: ... post-condition: ...
+functionDeclaration ::= FUNC IDENTIFIER COLON functionBody
+
+functionBody ::= (inputsSection)? (outputSection)? (conditionSection)*
+
+inputsSection ::= IDENTIFIER (COMMA IDENTIFIER)* COLON typeReference
+
+outputSection ::= IDENTIFIER COLON typeReference
+
+conditionSection ::= CONDITION IDENTIFIER? COLON expression
+
+// Enum declaration: enum Status: Open, Closed
+enumDeclaration ::= ENUM IDENTIFIER COLON enumValue (COMMA enumValue)*
+
+enumValue ::= IDENTIFIER
+
+// Choice declaration (one-of constraint)
+choiceDeclaration ::= CHOICE IDENTIFIER COLON qualifiedName (COMMA qualifiedName)*
+
+// Alias declaration
+aliasDeclaration ::= ALIAS IDENTIFIER COLON typeReference
+
+// Annotation declaration
+annotationDeclaration ::= ANNOTATION IDENTIFIER COLON STRING_LITERAL?
+
+// Expression (simplified for basic parsing)
+expression ::= conditionalExpression
+
+conditionalExpression ::= logicalOrExpression (IF logicalOrExpression THEN expression (ELSE expression)?)?
+
+logicalOrExpression ::= logicalAndExpression (OR logicalAndExpression)*
+
+logicalAndExpression ::= comparisonExpression (AND comparisonExpression)*
+
+comparisonExpression ::= additiveExpression ((EQ | NE | LT | GT | LE | GE) additiveExpression)?
+
+additiveExpression ::= multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
+
+multiplicativeExpression ::= unaryExpression ((MULT | DIV) unaryExpression)*
+
+unaryExpression ::= (NOT | MINUS)? primaryExpression
+
+primaryExpression ::= literal
+                    | IDENTIFIER
+                    | featureCall
+                    | existsExpression
+                    | LPAREN expression RPAREN
+
+featureCall ::= IDENTIFIER (DOT IDENTIFIER)*
+
+existsExpression ::= IDENTIFIER EXISTS
+
+literal ::= INTEGER_LITERAL
+          | STRING_LITERAL
+          | PATTERN_LITERAL

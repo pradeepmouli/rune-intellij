@@ -19,6 +19,30 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
+    <!-- Extension points defined by this plugin -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Language and file type registration -->
+        <fileType
+            name="Rosetta"
+            implementationClass="com.github.pmouli.rune.RosettaFileType"
+            fieldName="INSTANCE"
+            language="Rosetta"
+            extensions="rosetta"/>
+        
+        <!-- Parser definition -->
+        <lang.parserDefinition
+            language="Rosetta"
+            implementationClass="com.github.pmouli.rune.RosettaParserDefinition"/>
+        
+        <!-- Syntax highlighting -->
+        <lang.syntaxHighlighterFactory
+            language="Rosetta"
+            implementationClass="com.github.pmouli.rune.highlight.RosettaSyntaxHighlighterFactory"/>
+        
+        <colorSettingsPage
+            implementation="com.github.pmouli.rune.highlight.RosettaColorSettingsPage"/>
+    </extensions>
+
     <!-- Extension points and actions -->
     <actions>
         <action id="Rune.HelloAction"

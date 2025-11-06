@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.intellijPlatform)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.grammarKit)
 }
 
 group = "com.github.pmouli.rune"
@@ -24,9 +25,9 @@ dependencies {
     intellijPlatform {
         intellijIdeaCommunity("2024.2.4")
         bundledPlugins("com.intellij.java")
-        instrumentationTools()
         pluginVerifier()
     }
+    implementation(libs.jflex.lib)
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -72,4 +73,38 @@ ktlint {
 detekt {
     buildUponDefaultConfig = true
     config.setFrom(files("$rootDir/detekt.yml"))
+}
+
+// Grammar-Kit configuration for lexer and parser generation
+grammarKit {
+    jflexRelease.set("1.9.2")
+}
+
+tasks {
+    generateLexer {
+        sourceFile.set(file("src/main/kotlin/com/github/pmouli/rune/lexer/RosettaLexer.flex"))
+        targetOutputDir.set(file("build/generated/sources/lexer/com/github/pmouli/rune/lexer"))
+        purgeOldFiles.set(true)
+    }
+
+    generateParser {
+        sourceFile.set(file("src/main/kotlin/com/github/pmouli/rune/parser/Rosetta.bnf"))
+        targetRootOutputDir.set(file("build/generated/sources/parser"))
+        pathToParser.set("com/github/pmouli/rune/parser/RosettaParser.java")
+        pathToPsiRoot.set("com/github/pmouli/rune/psi")
+        purgeOldFiles.set(true)
+    }
+
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        dependsOn(generateLexer, generateParser)
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("build/generated/sources/lexer")
+            srcDir("build/generated/sources/parser")
+        }
+    }
 }

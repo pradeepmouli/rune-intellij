@@ -12,22 +12,22 @@ Plan: specs/001-rune-dsl-intellij/plan.md
 - [ ] T001 Ensure IntelliJ Platform plugin configuration in app/build.gradle.kts (intellijPlatform 2024.2.4, pluginVerifier)
 - [ ] T002 Add Rune DSL icons/resources placeholders in app/src/main/resources/icons/
 - [ ] T003 Update plugin metadata in app/src/main/resources/META-INF/plugin.xml (id, name, vendor, sinceBuild/untilBuild)
-- [ ] T004 Create package com/github/pmouli/rune in app/src/main/kotlin/
+- [x] T004 Create package com/github/pmouli/rune in app/src/main/kotlin/
 
 ## Phase 2 — Foundational (blocking prerequisites)
 
-- [ ] T005 Create language definition in app/src/main/kotlin/com/github/pmouli/rune/RosettaLanguage.kt
-- [ ] T006 Create file type registration in app/src/main/kotlin/com/github/pmouli/rune/RosettaFileType.kt
-- [ ] T007 Register language + file type EPs in app/src/main/resources/META-INF/plugin.xml
-- [ ] T008 Create lexer definition (.flex) in app/src/main/kotlin/com/github/pmouli/rune/lexer/RosettaLexer.flex
-- [ ] T009 Create lexer adapter in app/src/main/kotlin/com/github/pmouli/rune/lexer/RosettaLexerAdapter.kt
-- [ ] T010 Create parser grammar (.bnf) in app/src/main/kotlin/com/github/pmouli/rune/parser/RosettaParser.bnf
-- [ ] T011 Create ParserDefinition in app/src/main/kotlin/com/github/pmouli/rune/RosettaParserDefinition.kt
-- [ ] T012 Create PSI base interfaces in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaPsiElement.kt
-- [ ] T013 Create PSI named element in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaNamedElement.kt
-- [ ] T014 Create PSI element factory in app/src/main/kotlin/com/github/pmouli/rune/parser/RosettaPsiElementFactory.kt
-- [ ] T015 Configure syntax highlighter keys in app/src/main/kotlin/com/github/pmouli/rune/highlight/RosettaSyntaxHighlighter.kt
-- [ ] T016 Register highlighter + color settings EPs in app/src/main/resources/META-INF/plugin.xml
+- [x] T005 Create language definition in app/src/main/kotlin/com/github/pmouli/rune/RosettaLanguage.kt
+- [x] T006 Create file type registration in app/src/main/kotlin/com/github/pmouli/rune/RosettaFileType.kt
+- [x] T007 Register language + file type EPs in app/src/main/resources/META-INF/plugin.xml
+- [x] T008 Create lexer definition (.flex) in app/src/main/kotlin/com/github/pmouli/rune/lexer/RosettaLexer.flex
+- [x] T009 Create lexer adapter in app/src/main/kotlin/com/github/pmouli/rune/lexer/RosettaLexerAdapter.kt
+- [x] T010 Create parser grammar (.bnf) in app/src/main/kotlin/com/github/pmouli/rune/parser/Rosetta.bnf
+- [x] T011 Create ParserDefinition in app/src/main/kotlin/com/github/pmouli/rune/RosettaParserDefinition.kt
+- [x] T012 Create PSI base interfaces in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaPsiElement.kt
+- [x] T013 Create PSI named element in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaNamedElement.kt
+- [x] T014 Create PSI element factory in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaPsiElementFactory.kt
+- [x] T015 Configure syntax highlighter keys in app/src/main/kotlin/com/github/pmouli/rune/highlight/RosettaSyntaxHighlighter.kt
+- [x] T016 Register highlighter + color settings EPs in app/src/main/resources/META-INF/plugin.xml
 
 ---
 
