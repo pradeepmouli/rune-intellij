@@ -36,16 +36,16 @@ Plan: specs/001-rune-dsl-intellij/plan.md
 Goal: Editing assistance (highlighting, completion, diagnostics, navigation, hover, outline).
 Independent Test Criteria: Open sample .rosetta files and verify highlighting, completion, diagnostics, navigation without any generator configured.
 
-- [ ] T017 [P] [US1] Implement token types and syntax highlighter in app/src/main/kotlin/com/github/pmouli/rune/highlight/RosettaSyntaxHighlighter.kt
-- [ ] T018 [P] [US1] Implement color settings page in app/src/main/kotlin/com/github/pmouli/rune/highlight/RosettaColorSettingsPage.kt
-- [ ] T019 [P] [US1] Implement PSI for root elements (types, functions, enums) in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaDataType.kt
-- [ ] T020 [P] [US1] Implement PSI for attributes and expressions in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaAttribute.kt
-- [ ] T021 [US1] Implement completion contributor in app/src/main/kotlin/com/github/pmouli/rune/completion/RosettaCompletionContributor.kt
-- [ ] T022 [US1] Implement annotator (diagnostics) in app/src/main/kotlin/com/github/pmouli/rune/annotator/RosettaAnnotator.kt
-- [ ] T023 [US1] Implement reference contributor (go to definition) in app/src/main/kotlin/com/github/pmouli/rune/reference/RosettaReferenceContributor.kt
-- [ ] T024 [US1] Implement documentation provider in app/src/main/kotlin/com/github/pmouli/rune/doc/RosettaDocumentationProvider.kt
-- [ ] T025 [US1] Implement structure view in app/src/main/kotlin/com/github/pmouli/rune/structure/RosettaStructureViewFactory.kt
-- [ ] T026 [US1] Register all US1 extension points in app/src/main/resources/META-INF/plugin.xml
+- [x] T017 [P] [US1] Implement token types and syntax highlighter in app/src/main/kotlin/com/github/pmouli/rune/highlight/RosettaSyntaxHighlighter.kt
+- [x] T018 [P] [US1] Implement color settings page in app/src/main/kotlin/com/github/pmouli/rune/highlight/RosettaColorSettingsPage.kt
+- [x] T019 [P] [US1] Implement PSI for root elements (types, functions, enums) in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaDataType.kt
+- [x] T020 [P] [US1] Implement PSI for attributes and expressions in app/src/main/kotlin/com/github/pmouli/rune/psi/RosettaAttribute.kt
+- [x] T021 [US1] Implement completion contributor in app/src/main/kotlin/com/github/pmouli/rune/completion/RosettaCompletionContributor.kt
+- [x] T022 [US1] Implement annotator (diagnostics) in app/src/main/kotlin/com/github/pmouli/rune/annotator/RosettaAnnotator.kt
+- [x] T023 [US1] Implement reference contributor (go to definition) in app/src/main/kotlin/com/github/pmouli/rune/reference/RosettaReferenceContributor.kt
+- [x] T024 [US1] Implement documentation provider in app/src/main/kotlin/com/github/pmouli/rune/doc/RosettaDocumentationProvider.kt
+- [x] T025 [US1] Implement structure view in app/src/main/kotlin/com/github/pmouli/rune/structure/RosettaStructureViewFactory.kt
+- [x] T026 [US1] Register all US1 extension points in app/src/main/resources/META-INF/plugin.xml
 
 ---
 

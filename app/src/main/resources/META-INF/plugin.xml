@@ -41,6 +41,27 @@
         
         <colorSettingsPage
             implementation="com.github.pmouli.rune.highlight.RosettaColorSettingsPage"/>
+        
+        <!-- Language features (US1) -->
+        <completion.contributor
+            language="Rosetta"
+            implementationClass="com.github.pmouli.rune.completion.RosettaCompletionContributor"/>
+        
+        <annotator
+            language="Rosetta"
+            implementationClass="com.github.pmouli.rune.annotator.RosettaAnnotator"/>
+        
+        <psi.referenceContributor
+            language="Rosetta"
+            implementation="com.github.pmouli.rune.reference.RosettaReferenceContributor"/>
+        
+        <lang.documentationProvider
+            language="Rosetta"
+            implementationClass="com.github.pmouli.rune.doc.RosettaDocumentationProvider"/>
+        
+        <lang.psiStructureViewFactory
+            language="Rosetta"
+            implementationClass="com.github.pmouli.rune.structure.RosettaStructureViewFactory"/>
     </extensions>
 
     <!-- Extension points and actions -->

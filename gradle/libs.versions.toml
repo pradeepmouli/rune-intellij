@@ -9,6 +9,8 @@ ktlint = "12.1.1"
 detekt = "1.23.7"
 grammarKit = "2022.3.2.2"
 jflex = "1.9.2"
+grammarKit = "2022.3.2.2"
+jflex = "1.9.2"
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
