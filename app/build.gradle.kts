@@ -77,7 +77,6 @@ ktlint {
 
     // Disable ktlint temporarily due to parsing issues
     // Re-enable after fixing compatibility
-    ignoreFailures.set(true)
 }
 
 detekt {
