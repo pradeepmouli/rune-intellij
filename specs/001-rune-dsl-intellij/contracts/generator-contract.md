@@ -11,7 +11,7 @@
 ### Kotlin Interface (Plugin-Side)
 
 ```kotlin
-package com.github.pmouli.rune
+package dev.mouli.rune
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -92,12 +92,12 @@ class GeneratorException(message: String, cause: Throwable? = null) : Exception(
 ## Reference Implementation (Adapter for Rune DSL Maven Generator)
 
 ```kotlin
-package com.github.pmouli.rune.generators
+package dev.mouli.rune.generators
 
 import com.regnosys.rosetta.RosettaStandaloneSetup
 import com.regnosys.rosetta.generator.RosettaGenerator
 import com.regnosys.rosetta.maven.AbstractRuneGeneratorMojo
-import com.github.pmouli.rune.*
+import dev.mouli.rune.*
 
 /**
  * Adapter wrapping Rune DSL's Maven-based generator for IntelliJ plugin use.
@@ -253,4 +253,4 @@ class RuneGenerationCompileTask : CompileTask {
 
 1. **TypeScript Generator**: Additional `RosettaTypeScriptGeneratorAdapter` for TS output
 2. **Custom Templates**: Allow users to provide Velocity/Freemarker templates
-3. **Gradle Plugin**: Standalone `com.github.pmouli.rune-gradle-plugin` invoking same contract
+3. **Gradle Plugin**: Standalone `dev.mouli.rune-gradle-plugin` invoking same contract

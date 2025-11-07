@@ -2,7 +2,7 @@
 https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
 	<!-- Unique identifier of the plugin. Must be unique across all plugins on the Marketplace. -->
-	<id>com.github.pmouli.rune-intellij</id>
+	<id>dev.mouli.rune-intellij</id>
 
 	<!-- Public plugin name should be written in Title Case. -->
 	<name>Rune DSL</name>
@@ -25,7 +25,7 @@ https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 		<!-- Language and file type registration -->
 		<fileType
 			name="Rosetta"
-			implementationClass="com.github.pmouli.rune.RosettaFileType"
+			implementationClass="dev.mouli.rune.RosettaFileType"
 			fieldName="INSTANCE"
 			language="Rosetta"
 			extensions="rosetta" />
@@ -33,63 +33,63 @@ https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 		<!-- Parser definition -->
 		<lang.parserDefinition
 			language="Rosetta"
-			implementationClass="com.github.pmouli.rune.RosettaParserDefinition" />
+			implementationClass="dev.mouli.rune.RosettaParserDefinition" />
 
 		<!-- Syntax highlighting -->
 		<lang.syntaxHighlighterFactory
 			language="Rosetta"
-			implementationClass="com.github.pmouli.rune.highlight.RosettaSyntaxHighlighterFactory" />
+			implementationClass="dev.mouli.rune.highlight.RosettaSyntaxHighlighterFactory" />
 
 		<colorSettingsPage
-			implementation="com.github.pmouli.rune.highlight.RosettaColorSettingsPage" />
+			implementation="dev.mouli.rune.highlight.RosettaColorSettingsPage" />
 
 		<!-- Language features (US1) -->
 		<completion.contributor
 			language="Rosetta"
-			implementationClass="com.github.pmouli.rune.completion.RosettaCompletionContributor" />
+			implementationClass="dev.mouli.rune.completion.RosettaCompletionContributor" />
 
 		<annotator
 			language="Rosetta"
-			implementationClass="com.github.pmouli.rune.annotator.RosettaAnnotator" />
+			implementationClass="dev.mouli.rune.annotator.RosettaAnnotator" />
 
 		<psi.referenceContributor
 			language="Rosetta"
-			implementation="com.github.pmouli.rune.reference.RosettaReferenceContributor" />
+			implementation="dev.mouli.rune.reference.RosettaReferenceContributor" />
 
 		<lang.documentationProvider
 			language="Rosetta"
-			implementationClass="com.github.pmouli.rune.doc.RosettaDocumentationProvider" />
+			implementationClass="dev.mouli.rune.doc.RosettaDocumentationProvider" />
 
 		<lang.psiStructureViewFactory
 			language="Rosetta"
-			implementationClass="com.github.pmouli.rune.structure.RosettaStructureViewFactory" />
+			implementationClass="dev.mouli.rune.structure.RosettaStructureViewFactory" />
 
 		<!-- Project configuration -->
 		<projectConfigurable
-			instance="com.github.pmouli.rune.settings.RuneSettingsConfigurable"
+			instance="dev.mouli.rune.settings.RuneSettingsConfigurable"
 			displayName="Rune DSL"
 			groupId="tools" />
 
 		<projectService
-			serviceImplementation="com.github.pmouli.rune.settings.RuneProjectConfiguration" />
+			serviceImplementation="dev.mouli.rune.settings.RuneProjectConfiguration" />
 
 		<!-- Generation preview service (US2) -->
 		<projectService
-			serviceImplementation="com.github.pmouli.rune.generation.PreviewService" />
+			serviceImplementation="dev.mouli.rune.generation.PreviewService" />
 
 		<!-- Project template (US3) -->
 		<projectTemplatesFactory
-			implementation="com.github.pmouli.rune.project.RuneProjectTemplateFactory" />
+			implementation="dev.mouli.rune.project.RuneProjectTemplateFactory" />
 
 		<moduleType
 			id="RUNE_MODULE_TYPE"
-			implementationClass="com.github.pmouli.rune.project.RuneModuleType" />
+			implementationClass="dev.mouli.rune.project.RuneModuleType" />
 	</extensions>
 
 	<!-- Extension points and actions -->
 	<actions>
 		<action id="Rune.GeneratePreview"
-			class="com.github.pmouli.rune.actions.GeneratePreviewAction"
+			class="dev.mouli.rune.actions.GeneratePreviewAction"
 			text="Generate Code Preview"
 			description="Generate Java code from Rune DSL with preview">
 			<add-to-group group-id="ProjectViewPopupMenu" anchor="last" />
@@ -97,7 +97,7 @@ https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 		</action>
 
 		<action id="Rune.HelloAction"
-			class="com.github.pmouli.rune.actions.HelloAction"
+			class="dev.mouli.rune.actions.HelloAction"
 			text="Hello Rune"
 			description="Sample action to demonstrate Rune plugin">
 			<add-to-group group-id="ToolsMenu" anchor="first" />
@@ -105,7 +105,7 @@ https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 
 		<!-- US3 Actions -->
 		<action id="Rune.Validate"
-			class="com.github.pmouli.rune.actions.ValidateAction"
+			class="dev.mouli.rune.actions.ValidateAction"
 			text="Validate Rune DSL Files"
 			description="Validate all Rune DSL files in the project">
 			<add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="Rune.HelloAction" />
@@ -113,7 +113,7 @@ https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 		</action>
 
 		<action id="Rune.Export"
-			class="com.github.pmouli.rune.actions.ExportAction"
+			class="dev.mouli.rune.actions.ExportAction"
 			text="Export Rune DSL Artifacts"
 			description="Export Rune DSL files and configuration">
 			<add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="Rune.Validate" />

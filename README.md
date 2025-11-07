@@ -229,7 +229,7 @@ func validatePerson:
 
 ## Architecture
 
-- **Plugin ID**: `com.github.pmouli.rune-intellij`
+- **Plugin ID**: `dev.mouli.rune-intellij`
 - **IntelliJ Platform**: 2024.2.4 (Community Edition)
 - **Compatibility**: builds 242–243.*
 - **Kotlin**: 2.0.21

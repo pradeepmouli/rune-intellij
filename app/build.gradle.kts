@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.grammarKit)
 }
 
-group = "com.github.pmouli.rune"
+group = "dev.mouli.rune"
 version = "0.1.0"
 
 repositories {
@@ -38,7 +38,7 @@ kotlin {
 
 intellijPlatform {
     pluginConfiguration {
-        id = "com.github.pmouli.rune-intellij"
+        id = "dev.mouli.rune-intellij"
         name = "Rune DSL"
         version = project.version.toString()
 
@@ -92,16 +92,16 @@ grammarKit {
 
 tasks {
     generateLexer {
-        sourceFile.set(file("src/main/kotlin/com/github/pmouli/rune/lexer/RosettaLexer.flex"))
-        targetOutputDir.set(file("build/generated/sources/lexer/com/github/pmouli/rune/lexer"))
+        sourceFile.set(file("src/main/kotlin/dev/mouli/rune/lexer/RosettaLexer.flex"))
+        targetOutputDir.set(file("build/generated/sources/lexer/dev/mouli/rune/lexer"))
         purgeOldFiles.set(true)
     }
 
     generateParser {
-        sourceFile.set(file("src/main/kotlin/com/github/pmouli/rune/parser/Rosetta.bnf"))
+        sourceFile.set(file("src/main/kotlin/dev/mouli/rune/parser/Rosetta.bnf"))
         targetRootOutputDir.set(file("build/generated/sources/parser"))
-        pathToParser.set("com/github/pmouli/rune/parser/RosettaParser.java")
-        pathToPsiRoot.set("com/github/pmouli/rune/psi")
+        pathToParser.set("dev/mouli/rune/parser/RosettaParser.java")
+        pathToPsiRoot.set("dev/mouli/rune/psi")
         purgeOldFiles.set(true)
     }
 

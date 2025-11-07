@@ -151,7 +151,7 @@ Rune DSL generates Java code from .rosetta models via:
    - Trigger re-index after generation to update PSI/caches
 
 **Alternatives Considered**:
-- **Gradle Plugin**: Create com.github.pmouli.rune-gradle-plugin; rejected as out-of-scope for initial plugin (can be future enhancement)
+- **Gradle Plugin**: Create dev.mouli.rune-gradle-plugin; rejected as out-of-scope for initial plugin (can be future enhancement)
 - **LSP Code Actions**: Rejected; IntelliJ native build integration provides better IDE experience
 - **Manual Invocation**: Rejected; users expect automatic generation on build (like Lombok, Kotlin annotation processors)
 
