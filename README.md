@@ -2,7 +2,13 @@
 
 IntelliJ IDEA plugin for the Rune DSL (Domain Specific Language), providing comprehensive editing support, code generation, project management, and validation tools.
 
-Based on the [Rune DSL project](https://github.com/finos/rune-dsl) by FINOS, this plugin brings rich IDE features to Rune developers.
+## Attribution
+
+This plugin is based on and inspired by:
+- **[Rune DSL](https://github.com/finos/rune-dsl)** - The core Rune DSL project by FINOS (Linux Foundation)
+- **[Rune VS Code Extension](https://github.com/finos/rune-dsl/tree/main/rune-ide)** - The reference IDE implementation for VS Code
+
+This IntelliJ plugin brings the capabilities of the Rune DSL ecosystem to JetBrains IDEs, building upon the foundation established by the FINOS Rune community.
 
 ## Features
 
@@ -190,10 +196,11 @@ This plugin follows IntelliJ Platform best practices:
 - **[Task Breakdown](specs/001-rune-dsl-intellij/tasks.md)** - Granular task list
 - **[Quick Start Guide](specs/001-rune-dsl-intellij/quickstart.md)** - Get started quickly
 
-## Related Projects
+## Acknowledgments
 
+This project builds upon the excellent work of the FINOS Rune community:
 - **[Rune DSL](https://github.com/finos/rune-dsl)** - Core Rune DSL project by FINOS
-- **[Rune VS Code Extension](https://github.com/finos/rune-dsl/tree/main/rune-ide)** - Reference implementation
+- **[Rune VS Code Extension](https://github.com/finos/rune-dsl/tree/main/rune-ide)** - The reference IDE implementation that served as inspiration for this plugin
 
 ## Configuration
 
@@ -270,4 +277,6 @@ This project follows the [Rune IntelliJ Plugin Constitution](.specify/memory/con
 
 ## License
 
-MIT
+Apache License 2.0
+
+This project is licensed under the Apache License 2.0 to align with the Rune DSL ecosystem. See the [LICENSE](LICENSE) file for details.
