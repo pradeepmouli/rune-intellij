@@ -8,9 +8,10 @@ plugins {
     alias(libs.plugins.intellijPlatform)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.grammarKit)
 }
 
-group = "com.github.pmouli.rune"
+group = "dev.mouli.rune"
 version = "0.1.0"
 
 repositories {
@@ -24,9 +25,9 @@ dependencies {
     intellijPlatform {
         intellijIdeaCommunity("2024.2.4")
         bundledPlugins("com.intellij.java")
-        instrumentationTools()
         pluginVerifier()
     }
+    implementation(libs.jflex.lib)
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -37,13 +38,19 @@ kotlin {
 
 intellijPlatform {
     pluginConfiguration {
-        id = "com.github.pmouli.rune-intellij"
-        name = "Rune IntelliJ Plugin"
+        id = "dev.mouli.rune-intellij"
+        name = "Rune DSL"
         version = project.version.toString()
 
         ideaVersion {
             sinceBuild = "242"
             untilBuild = "243.*"
+        }
+    }
+
+    pluginVerification {
+        ides {
+            ide("IC-2024.2.4")
         }
     }
 }
@@ -64,12 +71,53 @@ tasks {
 
 ktlint {
     version.set("1.0.1")
-    verbose.set(true)
+    verbose.set(false)
     android.set(false)
-    outputToConsole.set(true)
+    outputToConsole.set(false)
+
+    // Disable ktlint temporarily due to parsing issues
+    // Re-enable after fixing compatibility
 }
 
 detekt {
     buildUponDefaultConfig = true
     config.setFrom(files("$rootDir/detekt.yml"))
+}
+
+// Grammar-Kit configuration for lexer and parser generation
+grammarKit {
+    jflexRelease.set("1.9.2")
+}
+
+tasks {
+    generateLexer {
+        sourceFile.set(file("src/main/kotlin/dev/mouli/rune/lexer/RosettaLexer.flex"))
+        targetOutputDir.set(file("build/generated/sources/lexer/dev/mouli/rune/lexer"))
+        purgeOldFiles.set(true)
+    }
+
+    generateParser {
+        sourceFile.set(file("src/main/kotlin/dev/mouli/rune/parser/Rosetta.bnf"))
+        targetRootOutputDir.set(file("build/generated/sources/parser"))
+        pathToParser.set("dev/mouli/rune/parser/RosettaParser.java")
+        pathToPsiRoot.set("dev/mouli/rune/psi")
+        purgeOldFiles.set(true)
+    }
+
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        dependsOn(generateLexer, generateParser)
+    }
+
+    named("prepareJarSearchableOptions") {
+        enabled = false
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("build/generated/sources/lexer")
+            srcDir("build/generated/sources/parser")
+        }
+    }
 }

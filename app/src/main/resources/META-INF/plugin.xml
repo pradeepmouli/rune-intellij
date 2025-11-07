@@ -1,31 +1,123 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<!-- Plugin Configuration File. Read more:
+https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <!-- Unique identifier of the plugin. Must be unique across all plugins on the Marketplace. -->
-    <id>com.github.pmouli.rune-intellij</id>
+	<!-- Unique identifier of the plugin. Must be unique across all plugins on the Marketplace. -->
+	<id>dev.mouli.rune-intellij</id>
 
-    <!-- Public plugin name should be written in Title Case. -->
-    <name>Rune IntelliJ Plugin</name>
+	<!-- Public plugin name should be written in Title Case. -->
+	<name>Rune DSL</name>
 
-    <!-- Plugin vendor: your organization or your name -->
-    <vendor email="support@example.com" url="https://github.com/pmouli/rune-intellij">pmouli</vendor>
+	<!-- Plugin vendor: your organization or your name -->
+	<vendor email="support@example.com" url="https://github.com/pmouli/rune-intellij">pmouli</vendor>
 
-    <!-- Description of the plugin displayed in the Marketplace and IDE settings. -->
-    <description><![CDATA[
+	<!-- Description of the plugin displayed in the Marketplace and IDE settings. -->
+	<description><![CDATA[
         A minimal IntelliJ Platform plugin built with Kotlin, following best practices for threading,
         PSI/VFS safety, and clean architecture.
     ]]></description>
 
-    <!-- Product and plugin compatibility requirements.
+	<!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
-    <depends>com.intellij.modules.platform</depends>
+	<depends>com.intellij.modules.platform</depends>
 
-    <!-- Extension points and actions -->
-    <actions>
-        <action id="Rune.HelloAction"
-                class="com.github.pmouli.rune.actions.HelloAction"
-                text="Hello Rune"
-                description="Sample action to demonstrate Rune plugin">
-            <add-to-group group-id="ToolsMenu" anchor="first"/>
-        </action>
-    </actions>
+	<!-- Extension points defined by this plugin -->
+	<extensions defaultExtensionNs="com.intellij">
+		<!-- Language and file type registration -->
+		<fileType
+			name="Rosetta"
+			implementationClass="dev.mouli.rune.RosettaFileType"
+			fieldName="INSTANCE"
+			language="Rosetta"
+			extensions="rosetta" />
+
+		<!-- Parser definition -->
+		<lang.parserDefinition
+			language="Rosetta"
+			implementationClass="dev.mouli.rune.RosettaParserDefinition" />
+
+		<!-- Syntax highlighting -->
+		<lang.syntaxHighlighterFactory
+			language="Rosetta"
+			implementationClass="dev.mouli.rune.highlight.RosettaSyntaxHighlighterFactory" />
+
+		<colorSettingsPage
+			implementation="dev.mouli.rune.highlight.RosettaColorSettingsPage" />
+
+		<!-- Language features (US1) -->
+		<completion.contributor
+			language="Rosetta"
+			implementationClass="dev.mouli.rune.completion.RosettaCompletionContributor" />
+
+		<annotator
+			language="Rosetta"
+			implementationClass="dev.mouli.rune.annotator.RosettaAnnotator" />
+
+		<psi.referenceContributor
+			language="Rosetta"
+			implementation="dev.mouli.rune.reference.RosettaReferenceContributor" />
+
+		<lang.documentationProvider
+			language="Rosetta"
+			implementationClass="dev.mouli.rune.doc.RosettaDocumentationProvider" />
+
+		<lang.psiStructureViewFactory
+			language="Rosetta"
+			implementationClass="dev.mouli.rune.structure.RosettaStructureViewFactory" />
+
+		<!-- Project configuration -->
+		<projectConfigurable
+			instance="dev.mouli.rune.settings.RuneSettingsConfigurable"
+			displayName="Rune DSL"
+			groupId="tools" />
+
+		<projectService
+			serviceImplementation="dev.mouli.rune.settings.RuneProjectConfiguration" />
+
+		<!-- Generation preview service (US2) -->
+		<projectService
+			serviceImplementation="dev.mouli.rune.generation.PreviewService" />
+
+		<!-- Project template (US3) -->
+		<projectTemplatesFactory
+			implementation="dev.mouli.rune.project.RuneProjectTemplateFactory" />
+
+		<moduleType
+			id="RUNE_MODULE_TYPE"
+			implementationClass="dev.mouli.rune.project.RuneModuleType" />
+	</extensions>
+
+	<!-- Extension points and actions -->
+	<actions>
+		<action id="Rune.GeneratePreview"
+			class="dev.mouli.rune.actions.GeneratePreviewAction"
+			text="Generate Code Preview"
+			description="Generate Java code from Rune DSL with preview">
+			<add-to-group group-id="ProjectViewPopupMenu" anchor="last" />
+			<add-to-group group-id="EditorPopupMenu" anchor="last" />
+		</action>
+
+		<action id="Rune.HelloAction"
+			class="dev.mouli.rune.actions.HelloAction"
+			text="Hello Rune"
+			description="Sample action to demonstrate Rune plugin">
+			<add-to-group group-id="ToolsMenu" anchor="first" />
+		</action>
+
+		<!-- US3 Actions -->
+		<action id="Rune.Validate"
+			class="dev.mouli.rune.actions.ValidateAction"
+			text="Validate Rune DSL Files"
+			description="Validate all Rune DSL files in the project">
+			<add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="Rune.HelloAction" />
+			<add-to-group group-id="ProjectViewPopupMenu" anchor="last" />
+		</action>
+
+		<action id="Rune.Export"
+			class="dev.mouli.rune.actions.ExportAction"
+			text="Export Rune DSL Artifacts"
+			description="Export Rune DSL files and configuration">
+			<add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="Rune.Validate" />
+			<add-to-group group-id="ProjectViewPopupMenu" anchor="last" />
+		</action>
+	</actions>
 </idea-plugin>

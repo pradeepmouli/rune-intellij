@@ -7,12 +7,16 @@ intellijPlatform = "2.10.4"
 junit-jupiter = "5.11.3"
 ktlint = "12.1.1"
 detekt = "1.23.7"
+grammarKit = "2022.3.2.2"
+jflex = "1.7.0"
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+jflex-lib = { module = "de.jflex:jflex", version.ref = "jflex" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+grammarKit = { id = "org.jetbrains.grammarkit", version.ref = "grammarKit" }

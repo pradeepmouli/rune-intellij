@@ -1,0 +1,21 @@
+package dev.mouli.rune.psi
+
+import dev.mouli.rune.RosettaFileType
+import dev.mouli.rune.RosettaLanguage
+import com.intellij.extapi.psi.PsiFileBase
+import com.intellij.openapi.fileTypes.FileType
+import com.intellij.psi.FileViewProvider
+
+/**
+ * PSI file element for Rune DSL (.rosetta) files.
+ *
+ * Represents the root of the PSI tree for a Rosetta file.
+ * Provides access to the file's top-level declarations (namespace, types, functions, etc.).
+ *
+ * Thread-safe: PSI files are accessed via ReadAction in IntelliJ Platform.
+ */
+class RosettaFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, RosettaLanguage.INSTANCE) {
+    override fun getFileType(): FileType = RosettaFileType.INSTANCE
+
+    override fun toString(): String = "Rosetta File"
+}
